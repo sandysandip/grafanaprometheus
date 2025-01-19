@@ -7,12 +7,21 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus_data/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
+      # - ./prometheus_data/prometheus.yml:/etc/prometheus/prometheus.yml
+      # - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     networks:
       - monitoring
 
+  blackbox-exporter:
+    image: quay.io/prometheus/blackbox-exporter:latest
+    container_name: blackbox-exporter
+    restart: unless-stopped
+    ports:
+      - 9115:9115
+    networks:
+      - monitoring
 
   grafana:
     image: grafana/grafana
